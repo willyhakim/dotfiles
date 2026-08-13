@@ -1,0 +1,48 @@
+# ~/.gitconfig — managed by github.com/willyhakim/dotfiles (stow package: git)
+#
+# Machine-specific settings (credential helpers, work identity) live in
+# ~/.gitconfig.local, included at the bottom.
+
+[user]
+	name = William Hakizimana
+	email = willyha24@gmail.com
+
+[init]
+	defaultBranch = main
+
+[core]
+	editor = vim
+	excludesfile = ~/.config/git/ignore
+	pager = less -FRX
+
+[alias]
+	graph = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+	histogram = !git shortlog -s -n | perl -lane 'print \"=\" x ($F[0] / 5), \"\t\", $F[1], \" \", $F[2]'
+	st = status -sb
+	last = log -1 --stat
+	unstage = reset HEAD --
+	amend = commit --amend --no-edit
+
+[pull]
+	rebase = false
+
+[push]
+	default = current
+	autoSetupRemote = true
+
+[fetch]
+	prune = true
+
+[diff]
+	colorMoved = zebra
+
+[rerere]
+	enabled = true
+
+[color]
+	ui = auto
+
+# Machine-local: credential helpers, work identity. Untracked; created by
+# bootstrap.sh from templates/gitconfig.local.example.
+[include]
+	path = ~/.gitconfig.local

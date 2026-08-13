@@ -1,0 +1,38 @@
+# Global gitignore (core.excludesfile). Things that should never be committed
+# to ANY repo, regardless of that repo's own .gitignore.
+
+# --- macOS -------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+# --- Editors / IDEs ----------------------------------------------------------
+*~
+*.swp
+*.swo
+.idea/
+*.iml
+.vscode/settings.json
+.project
+.classpath
+
+# --- Agent / assistant local state -------------------------------------------
+**/.claude/settings.local.json
+.aider*
+.cursorignore
+
+# --- Environments & secrets ---------------------------------------------------
+.env.local
+*.pem
+.direnv/
+
+# --- Language scratch ----------------------------------------------------------
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+node_modules/
+.mypy_cache/
