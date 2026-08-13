@@ -1,0 +1,45 @@
+# ---------------------------------------------------------------------------
+# Never-commit list. These hold credentials or machine-local state.
+# The pre-commit hook is the backstop; this file is the first line of defence.
+# ---------------------------------------------------------------------------
+
+# Credential-bearing configs
+.npmrc
+.netrc
+.s3cfg
+.dbshell
+.erlang.cookie
+.aws/
+.ssh/
+**/auth.json
+**/mcp.json
+.claude.json*
+
+# Local overrides — created by bootstrap.sh, never tracked
+*.local
+!*.local.example
+.zshrc.local
+.gitconfig.local
+
+# History files of every flavour
+*_history
+*history*
+.viminfo
+
+# Secrets by convention
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+
+# macOS
+.DS_Store
+._*
+
+# Editor scratch
+*~
+*.swp
+*.bak

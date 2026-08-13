@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Blocks commits that contain credential-shaped strings.
+# Installed to .git/hooks/pre-commit by bootstrap.sh.
+# Bypass (only when you are certain): git commit --no-verify
+
+set -uo pipefail
+
+RED=$'\033[0;31m'; YEL=$'\033[0;33m'; NC=$'\033[0m'
+
+# Files that legitimately contain the words we grep for (this hook, the docs
+# describing it, and the ignore list itself). Matched against the repo path.
+SELF_EXEMPT='^(hooks/pre-commit|\.gitignore|README\.md|legacy/NOTES\.md)$'
+
+# Credential shapes. Kept deliberately narrow to avoid crying wolf on config
+# keys that merely contain the word "key" or on colour hex values.
+PATTERNS=(
+  '_authToken[[:space:]]*='
+  '(NPM_TOKEN|GITHUB_TOKEN|GH_TOKEN|OPENAI_API_KEY|ANTHROPIC_API_KEY)[[:space:]]*=[[:space:]]*[^"$'"'"'{[:space:]]'
+  '(api[_-]?key|secret|passwd|password)[[:space:]]*[=:][[:space:]]*['"'"'"]?[A-Za-z0-9/+_-]{16,}'
+  'BEGIN [A-Z ]*PRIVATE KEY'
+  'aws_secret_access_key[[:space:]]*='
+  'xox[baprs]-[A-Za-z0-9-]{10,}'          # Slack
+  'ghp_[A-Za-z0-9]{20,}'                  # GitHub PAT
+  'sk-[A-Za-z0-9_-]{20,}'                 # OpenAI / Anthropic style
+  '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'  # bare UUID (npm tokens)
+)
+
+fail=0
+while IFS= read -r file; do
+  [[ -z "$file" ]] && continue
+  [[ "$file" =~ $SELF_EXEMPT ]] && continue
+  # Skip binaries.
+  git show ":$file" 2>/dev/null | grep -qI . || continue
+
+  for pat in "${PATTERNS[@]}"; do
+    if match=$(git show ":$file" 2>/dev/null | grep -nEi "$pat" | head -3); then
+      [[ -z "$match" ]] && continue
+      printf '%s✗ possible secret%s in %s\n' "$RED" "$NC" "$file"
+      printf '  pattern: %s\n' "$pat"
+      while IFS= read -r line; do printf '  %s\n' "${line:0:120}"; done <<<"$match"
+      fail=1
+    fi
+  done
+done < <(git diff --cached --name-only --diff-filter=ACM)
+
+if (( fail )); then
+  cat <<EOF
+
+${RED}Commit blocked.${NC} Secrets must never enter this repo — it is public and
+history is forever. Move the value to ~/.zshrc.local or ~/.gitconfig.local
+(both untracked) and reference it by variable instead.
+
+${YEL}If this is a false positive:${NC} git commit --no-verify
+EOF
+  exit 1
+fi
+
+exit 0
