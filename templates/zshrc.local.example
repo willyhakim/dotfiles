@@ -1,0 +1,19 @@
+# ~/.zshrc.local — machine-specific and secret. NEVER committed.
+# bootstrap.sh copies this template into place if the real file is absent.
+#
+# Sourced last by ~/.zshrc, so anything here overrides the tracked config.
+
+# --- Secrets -----------------------------------------------------------------
+# Tokens belong here, not in ~/.npmrc and not in a tracked file.
+# export NPM_TOKEN="..."
+# export GITHUB_TOKEN="..."
+# export ANTHROPIC_API_KEY="..."
+# export OPENAI_API_KEY="..."
+
+# --- Work-only / per-machine -------------------------------------------------
+# export AWS_PROFILE="..."
+# path_prepend "$HOME/work/bin"     # helper defined in ~/.config/zsh/00-path.zsh
+
+# --- Overrides ---------------------------------------------------------------
+# ZSH_THEME="agnoster"
+# alias dc='docker-compose'   # if you still need compose v1 somewhere

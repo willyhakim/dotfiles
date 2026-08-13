@@ -1,0 +1,25 @@
+# ~/.gitconfig.local — machine-specific git config. NEVER committed.
+# Included from the tracked ~/.gitconfig.
+#
+# Credential helper paths differ per machine (and per Homebrew prefix), which is
+# why they live here rather than in the tracked file.
+#
+# NOTE: order matters, and a bare `helper =` with no value RESETS the chain,
+# discarding every helper listed before it. The old ~/.gitconfig had exactly
+# that bug — osxkeychain was silently being thrown away.
+
+[credential]
+	helper = osxkeychain
+
+# Git Credential Manager — uncomment if installed (brew cask git-credential-manager).
+# Listing it after osxkeychain means keychain is tried first.
+# [credential]
+# 	helper = /usr/local/share/gcm-core/git-credential-manager
+
+# Azure DevOps needs the full path to disambiguate org-scoped credentials.
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+
+# --- Work identity override ---------------------------------------------------
+# [user]
+# 	email = you@work.example
