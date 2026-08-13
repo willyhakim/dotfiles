@@ -1,0 +1,67 @@
+source ~/.bashrc
+####### BEGIN: ADDED BY William Hakizimana.
+### Bash Completion ###
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+        . $(brew --prefix)/etc/bash_completion
+fi
+
+##CLI coloring
+CLICOLOR=1
+export PS1='\[\033[01;34m\]\W\[\033[00m\]$(__git_ps1) $(__docker_machine_ps1)\$ '
+
+
+# Alias
+alias l='ls -G'
+alias ll='ls -lahG'
+
+####### END: ADDED BY William Hakizimana.
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+###### VIRTUALENVWRAPPER STUFF
+#export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+#export WORKON_HOME=~/Envs
+#export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
+#export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
+#source /usr/local/bin/virtualenvwrapper.sh
+
+export PATH=/usr/local/sbin:$PATH
+export PATH=~/bin:/Users/willy.hakizimana/.nvm/versions/node/v8.0.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PATH="/usr/local/bin:/Applications/Postgres.app/Contents/Versions/9.6/bin/:$PATH"
+
+# added by Anaconda3 4.4.0 installer
+# export PATH="/Users/willy.hakizimana/anaconda3/bin:$PATH"
+
+# Add Visual Studio code
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+#NPM Token
+#  export NPM_TOKEN  [REDACTED on archival — rotate it; see NOTES.md]
+export PATH=~/.local/bin:$PATH
+
+
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+
+
+# added by Anaconda3 5.1.0 installer
+# export PATH="/Users/willy.hakizimana/anaconda3/bin:$PATH"
+
+#GOLANG SETUP
+export GOPATH=$HOME/go-workspace # don't forget to change your path correctly!
+export GOROOT=/usr/local/opt/go/libexec
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
+
+#openssl stuff
+export PATH="/usr/local/opt/openssl/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl/include"
+export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
+
+# opam configuration
+test -r /Users/willy.hakizimana/.opam/opam-init/init.sh && . /Users/willy.hakizimana/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+# Created by `pipx` on 2021-08-16 01:09:31
+export PATH="$PATH:/Users/willy.hakizimana/Library/Python/3.9/bin"
