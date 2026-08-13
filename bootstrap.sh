@@ -112,6 +112,11 @@ done
 # ---------------------------------------------------------------------------
 step "4. Stow packages"
 # ---------------------------------------------------------------------------
+if (( DRY_RUN && conflicts )); then
+  warn "In --dry-run the backups above did not actually happen, so stow will"
+  warn "report conflicts for those ${conflicts} file(s). That is expected — a real"
+  warn "run moves them aside first and the conflicts disappear."
+fi
 for pkg in "${PACKAGES[@]}"; do
   [[ -d "${DOTFILES}/${pkg}" ]] || continue
   info "stow ${pkg}"

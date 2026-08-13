@@ -4,17 +4,39 @@
 # Credential helper paths differ per machine (and per Homebrew prefix), which is
 # why they live here rather than in the tracked file.
 #
-# NOTE: order matters, and a bare `helper =` with no value RESETS the chain,
-# discarding every helper listed before it. The old ~/.gitconfig had exactly
-# that bug — osxkeychain was silently being thrown away.
+# ---------------------------------------------------------------------------
+# Why this block is not in the tracked .gitconfig
+# ---------------------------------------------------------------------------
+# The original ~/.gitconfig had:
+#
+#     [credential]
+#         helper = osxkeychain
+#         helper =                  <-- empty value
+#         helper = /usr/local/share/gcm-core/git-credential-manager
+#
+# A `helper =` with no value is a RESET directive: it discards every helper
+# listed before it. So osxkeychain was silently thrown away and GCM was the only
+# helper actually in use. That was almost certainly unintentional, but it is the
+# behaviour the machine has been running on — so GCM is kept below.
+#
+# Before adding osxkeychain here, check whether something already provides it:
+#
+#     git config --show-origin --get-all credential.helper
+#
+# Homebrew's git ships /usr/local/etc/gitconfig with osxkeychain already set,
+# in which case listing it again just makes git query the keychain twice.
+# ---------------------------------------------------------------------------
 
+# Git Credential Manager. Handles GitHub/Azure DevOps OAuth flows that the bare
+# keychain helper cannot. Listed here so the system-level osxkeychain (if any)
+# is consulted first and GCM only handles what the keychain does not have.
 [credential]
-	helper = osxkeychain
+	helper = /usr/local/share/gcm-core/git-credential-manager
 
-# Git Credential Manager — uncomment if installed (brew cask git-credential-manager).
-# Listing it after osxkeychain means keychain is tried first.
+# Uncomment ONLY if `git config --show-origin --get-all credential.helper` shows
+# no osxkeychain coming from a system-level file.
 # [credential]
-# 	helper = /usr/local/share/gcm-core/git-credential-manager
+# 	helper = osxkeychain
 
 # Azure DevOps needs the full path to disambiguate org-scoped credentials.
 [credential "https://dev.azure.com"]
